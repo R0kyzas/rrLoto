@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import axios from '../api/axios';
 import Table from 'react-bootstrap/Table';
 import { useNavigate } from 'react-router-dom'
 import CancelModal from '../Components/CancelModal';
+import ResponseNotification from '../Components/ResponseNotification';
  
 
 const Admin = () => {
@@ -10,10 +11,14 @@ const Admin = () => {
     const navigate = useNavigate();
     const sessionToken = sessionStorage.getItem("loggedIn");
     const [data, setData] = useState({});
-    const [msg, setMsg] = useState('');
+    const [msg, setMsg] = useState(null);
     const [showCancelModal, setShowCancelModal] = useState(false);
     const [orderId, setOrderId] = useState('');
     const [searchQuery, setSearchQuery] = useState('');
+
+    const [responseData, setResponseData] = useState({});
+
+    const [showNotification, setShowNotification] = useState(false);
 
     useEffect(() => {
         if(!sessionToken)
@@ -21,16 +26,18 @@ const Admin = () => {
             navigate('/login');
         }
         const getData = async () => {
-            const {data: res} = await axios.get('http://localhost:8000/api/admin');
+            const {data: res} = await axios.get('/admin');
             setData(res);
         }
         getData();
     }, [msg])
     
+
     const handleAccept = async (data) => {
-        await axios.post(`http://localhost:8000/api/admin/confirm/${data}`)
+        await axios.post(`/admin/confirm/${data}`)
         .then((res) => {
-            setMsg(res.data.success)
+            const someData = {...[res.data.success]};
+            setMsg(someData)
         })
         .catch((err)=>{console.log(err)})
     }
@@ -42,19 +49,20 @@ const Admin = () => {
 
     const handleClick = async() => {
         
-        // await axios.post(`http://localhost:8000/api/admin/get-winner`)
-        // .then((res) => {
-        //     setMsg(res.data.success)
-        // })
-        // .catch((err)=>{console.log(err)})
+        await axios.post(`/admin/get-winner`)
+        .then((res) => {
+            setResponseData(res.data);
+            setShowNotification(true);
+        })
     }
-
+    console.log(msg)
     return(
         <>
             {sessionToken &&
             <>
                 <CancelModal showCancelModal={showCancelModal} setShowCancelModal={setShowCancelModal} orderId={orderId} setMsg={setMsg}/>
                 <div className='container d-flex admin-panel justify-content-center'>
+                    <ResponseNotification data={responseData} showNotification={showNotification} setshowNotification={setShowNotification} />
                     <div className="card card-ticket text-center">
                         <div className="card-header">
                             Admin
@@ -72,9 +80,10 @@ const Admin = () => {
                         </div>
                         <div class="input-group">
                             <button
-                            onClick={handleClick}
+                                className="btn btn-primary"
+                                onClick={handleClick}
                             >
-
+                                Išrinkti nugalėtoją
                             </button>
                         </div>
                             <Table striped bordered>

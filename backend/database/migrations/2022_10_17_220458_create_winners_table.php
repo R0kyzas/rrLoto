@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('winners', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('ticket_winner_id')->references('id')->on('tickets'); 
+            $table->foreignId('ticket_winner_id')->unique()->references('id')->on('tickets'); 
             $table->timestamps();
         });
     }

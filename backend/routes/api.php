@@ -33,7 +33,6 @@ Route::post('/admin/confirm/{order}', [AdminController::class, 'confirmOrder'])-
 Route::post('/admin/cancel/{order}', [AdminController::class, 'cancelOrder'])->name('order.confirm');
 
 Route::get('/lottery-tickets', [AdminController::class, 'getTicketsForRoullete'])->name('lottery.tickets');
-
 Route::post('/admin/get-winner', [AdminController::class, 'getWinner'])->name('get.winner');
 
 // Route::middleware('auth:sanctum')->get('/user', function (Request $request) {

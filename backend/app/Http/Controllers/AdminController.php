@@ -4,9 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreOrderCancelReasonRequest;
 use App\Models\Order;
-use App\Models\Ticket;
 use App\Models\Winner;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class AdminController extends Controller
 {
@@ -52,22 +52,34 @@ class AdminController extends Controller
     }
 
     public function getWinner(){
-        $ticket = Ticket::inRandomOrder()->first();
-        
-        Winner::create([
-            'ticket_winner_id' => $ticket,
-        ]);
 
-        return response()->json([
-            'success' => 'success', 
-        ]);
-    }
+        $winner = DB::table('tickets')
+            ->select('tickets.*')
+            ->leftJoin('winners','tickets.id','=','winners.ticket_winner_id')
+            ->whereNull('winners.id')
+            ->rightJoin('orders', 'orders.id', '=', 'tickets.order_id')
+            ->where('orders.active', '=', 1)
+            ->orderByRaw('RAND()')
+            ->limit(1)
+            ->first();
 
-    public function getTicketsForRoullete(){
-        // $ticket = Ticket::select('ticketNumber')->all()->random(1);
-        $ticket = Ticket::inRandomOrder()->select('ticketNumber', 'name', 'lastname')->first();
-        return response()->json([
-            'ticket' => $ticket,
-        ]);
+        if(!empty($winner))
+        {
+            Winner::create([
+                'ticket_winner_id' => $winner->id,
+            ]);        
+               
+            return response()->json([
+                'success' => true,
+                'error' => null,
+                'data' => 'Bilieto laimėtojas išrinktas!',
+            ]);
+        }else{
+            return response()->json([
+                'success' => false,
+                'error' => 'Nėra bilietų kuriems galima būtų priskirti laimėjimą...',
+                'data' => null,
+            ]);
+        }
     }
 }

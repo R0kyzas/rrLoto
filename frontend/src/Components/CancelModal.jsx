@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from '../api/axios';
 import { useForm } from 'react-hook-form';
 
 const CancelModal = ({showCancelModal, setShowCancelModal, orderId, setMsg}) => {
@@ -15,7 +15,7 @@ const CancelModal = ({showCancelModal, setShowCancelModal, orderId, setMsg}) => 
     });
 
     const onSubmit = async (data) => {
-        await axios.post(`http://localhost:8000/api/admin/cancel/${orderId}`, data)
+        await axios.post(`/admin/cancel/${orderId}`, data)
         .then((res) => {
             setMsg(res.data.success);
             setShowCancelModal(false);

@@ -20,4 +20,9 @@ class Ticket extends Model
     {
         return $this->belongsTo(Order::class);
     }
+
+    public function winner()
+    {
+        return $this->hasOne(Winner::class);
+    }
 }

@@ -8,7 +8,7 @@ const Checkbox = (props) => {
     }
     return(
         <div className='form-check'>
-            <input className='form-check-input' type={"radio"} name='getValue' value={props.value} onClick={(e)=>handleInputChange(e)} />
+            <input className='form-check-input' type={"radio"} id={props.id} name='getValue' value={props.value} onClick={(e)=>handleInputChange(e)} />
             <label className='form-check-label' htmlFor='flexRadio1'>
                 {props.labelText}
             </label>

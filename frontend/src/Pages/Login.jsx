@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import axios from '../api/axios';
 import { useForm } from 'react-hook-form';
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
@@ -33,7 +33,7 @@ const Login = (props) => {
     });
 
     const postUserData = async (data) => {
-        await axios.post('http://localhost:8000/api/login',data)
+        await axios.post('/login',data)
         .then((res) => {
             if(res.status === 200)
             {
@@ -66,7 +66,7 @@ const Login = (props) => {
             }
             {!promiseInProgress &&
                 <div className='container d-flex justify-content-center'>
-                    <div className="card text-center">
+                    <div className="card card-ticket text-center">
                         <div className="card-header">
                              Prisijungimas
                         </div>

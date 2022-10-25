@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import axios from '../api/axios';
 import { RandomReveal } from "react-random-reveal";
 import { usePromiseTracker, trackPromise } from "react-promise-tracker";
 import CircularProgress from '@mui/material/CircularProgress';
@@ -12,7 +12,7 @@ const Other = (props) => {
 
     useEffect(() => {
         const getTickets = async () => {
-            const {data: res} = await axios.get('http://localhost:8000/api/lottery-tickets');
+            const {data: res} = await axios.get('/lottery-tickets');
             setTicket(res.ticket);
         }
         trackPromise(getTickets());
@@ -36,7 +36,7 @@ const Other = (props) => {
             }
             {!promiseInProgress && 
                 <div className='container d-flex admin-panel justify-content-center'>
-                    <div className="card text-center">
+                    <div className="card card-ticket text-center">
                         <div className="card-header">
                             Loterijos laimėtojas
                         </div>

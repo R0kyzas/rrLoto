@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->boolean('active')->default(0);
             $table->integer('quantity');
-            $table->string('order_nr');
+            $table->string('order_nr')->unique();
             $table->string('cancel_reason', 255)->nullable(true);
             $table->timestamps();
         });
