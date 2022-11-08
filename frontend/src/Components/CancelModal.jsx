@@ -20,7 +20,6 @@ const CancelModal = ({showCancelModal, setShowCancelModal, orderId, setMsg}) => 
             setMsg(res.data.success);
             setShowCancelModal(false);
         })
-        .catch((err)=>{console.log(err)})
     }
 
     const handleClose = () => {
@@ -38,17 +37,17 @@ const CancelModal = ({showCancelModal, setShowCancelModal, orderId, setMsg}) => 
                             </div>
                             <form onSubmit={handleSubmit(onSubmit)} method="POST">
                                 <div className='modal-body'>
-                                    <div class="form-group">
+                                    <div className="form-group">
                                         <label>Nurodyti priežastį:</label>
-                                        <textarea class="form-control" {...register("cancel_reason", {required: true})}></textarea>
-                                        <div class="invalid-feedback">
+                                        <textarea className="form-control" {...register("cancel_reason", {required: true})}></textarea>
+                                        <div className="invalid-feedback">
                                             {errors.cancel_reason?.type === "required" && "Privaloma įvesti priežastį"}
                                         </div>
                                     </div>
                                 </div>
                                 <div className='modal-footer'>
-                                    <button type='submit' class='btn btn-primary'>Patvirtinti</button>
-                                    <button type='submit' class='btn btn-danger' onClick={handleClose}>Atšaukti</button>
+                                    <button type='submit' className='btn btn-danger'>Patvirtinti</button>
+                                    <button type='submit' className='btn btn-danger' onClick={handleClose}>Atšaukti</button>
                                 </div>
                             </form>
                         </div>

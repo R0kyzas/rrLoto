@@ -4,7 +4,6 @@ import Table from 'react-bootstrap/Table';
 import { useNavigate } from 'react-router-dom'
 import CancelModal from '../Components/CancelModal';
 import ResponseNotification from '../Components/ResponseNotification';
- 
 
 const Admin = () => {
 
@@ -39,7 +38,6 @@ const Admin = () => {
             const someData = {...[res.data.success]};
             setMsg(someData)
         })
-        .catch((err)=>{console.log(err)})
     }
 
     const handleCancel = (value) => {
@@ -55,32 +53,32 @@ const Admin = () => {
             setShowNotification(true);
         })
     }
-    console.log(msg)
+    
     return(
         <>
             {sessionToken &&
             <>
                 <CancelModal showCancelModal={showCancelModal} setShowCancelModal={setShowCancelModal} orderId={orderId} setMsg={setMsg}/>
                 <div className='container d-flex admin-panel justify-content-center'>
-                    <ResponseNotification data={responseData} showNotification={showNotification} setshowNotification={setShowNotification} />
+                    <ResponseNotification data={responseData} showNotification={showNotification} setShowNotification={setShowNotification} />
                     <div className="card card-ticket text-center">
                         <div className="card-header">
                             Admin
                         </div>
                         <div className='card-body'>
-                        <div class="input-group">
-                            <div class="form-outline">
+                        <div className="input-group">
+                            <div className="form-outline">
                                 <input 
                                     type="search" 
-                                    class="form-control" 
+                                    className="form-control" 
                                     placeholder='search'
                                     onChange={(e) => setSearchQuery(e.target.value)}
                                 />
                             </div>
                         </div>
-                        <div class="input-group">
+                        <div className="input-group">
                             <button
-                                className="btn btn-primary"
+                                className="btn btn-danger"
                                 onClick={handleClick}
                             >
                                 Išrinkti nugalėtoją
@@ -107,8 +105,8 @@ const Admin = () => {
                                                 
                                                 {order.active === 0 && (
                                                     <>
-                                                        <button className='btn btn-primary admin-table' onClick={() => handleAccept(order.id)}>Accept</button> 
-                                                        <button className='btn btn-primary admin-table' onClick={() => handleCancel(order.id)}>Cancel</button>
+                                                        <button className='btn btn-danger admin-table' onClick={() => handleAccept(order.id)}>Accept</button> 
+                                                        <button className='btn btn-danger admin-table' onClick={() => handleCancel(order.id)}>Cancel</button>
                                                     </>
                                                 )}
                                                 {order.active === 1 && (

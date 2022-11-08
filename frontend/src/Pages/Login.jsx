@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import axios from '../api/axios';
 import { useForm } from 'react-hook-form';
 import CircularProgress from '@mui/material/CircularProgress';
@@ -33,7 +33,7 @@ const Login = (props) => {
     });
 
     const postUserData = async (data) => {
-        await axios.post('/login',data)
+        await axios.post(LOGIN_URL,data)
         .then((res) => {
             if(res.status === 200)
             {
@@ -41,7 +41,6 @@ const Login = (props) => {
                 navigate('/admin');
             }
         })
-        .catch((err)=>{console.log(err)})
     }
     
     const onSubmit = (data) => {
@@ -80,7 +79,7 @@ const Login = (props) => {
                                             {...register("username", {required: true})}
                                         />
                                     </div>
-                                    <div class="invalid-feedback">
+                                    <div className="invalid-feedback">
                                         {errors.username?.type === "required" && "Slapyvardis privalomas"}
                                     </div>
                                     <div className='form-group'>
@@ -91,7 +90,7 @@ const Login = (props) => {
                                             {...register("password", {required: true})}
                                          />
                                     </div>
-                                    <div class="invalid-feedback">
+                                    <div className="invalid-feedback">
                                         {errors.password?.type === "required" && "Slaptažodis privalomas"}
                                     </div>
                                     <button 

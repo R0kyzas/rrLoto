@@ -1,10 +1,10 @@
 import React from "react";
 import { BsEmojiSmileFill, BsEmojiFrownFill } from "react-icons/bs";
 
-const ResponseNotification = ({ data, showNotification, setshowNotification }) => {
+const ResponseNotification = ({ data, showNotification, setShowNotification }) => {
 
     const handleClose = () => {
-        setshowNotification(false);
+        setShowNotification(false);
     }
     return (
         <>
@@ -36,7 +36,7 @@ const ResponseNotification = ({ data, showNotification, setshowNotification }) =
                                 </>
                             }
                                 <div className='modal-footer'>
-                                    <button type='submit' class='btn btn-danger' onClick={handleClose}>Supratau</button>
+                                    <button type='submit' className='btn btn-danger' onClick={handleClose}>Okay</button>
                                 </div>
                         </div>
                     </div>

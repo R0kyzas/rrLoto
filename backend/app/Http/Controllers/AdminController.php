@@ -55,7 +55,7 @@ class AdminController extends Controller
 
         $winner = DB::table('tickets')
             ->select('tickets.*')
-            ->leftJoin('winners','tickets.id','=','winners.ticket_winner_id')
+            ->leftJoin('winners','tickets.id','=','winners.ticket_id')
             ->whereNull('winners.id')
             ->rightJoin('orders', 'orders.id', '=', 'tickets.order_id')
             ->where('orders.active', '=', 1)
@@ -66,7 +66,7 @@ class AdminController extends Controller
         if(!empty($winner))
         {
             Winner::create([
-                'ticket_winner_id' => $winner->id,
+                'ticket_id' => $winner->id,
             ]);        
                
             return response()->json([

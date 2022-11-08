@@ -2,10 +2,9 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\TicketBasketController;
-use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\TicketController;
-use Illuminate\Http\Request;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -32,12 +31,13 @@ Route::get('/admin', [AdminController::class, 'index'])->name('admin');
 Route::post('/admin/confirm/{order}', [AdminController::class, 'confirmOrder'])->name('order.confirm');
 Route::post('/admin/cancel/{order}', [AdminController::class, 'cancelOrder'])->name('order.confirm');
 
-Route::get('/lottery-tickets', [AdminController::class, 'getTicketsForRoullete'])->name('lottery.tickets');
+Route::get('/lottery-tickets', [UserController::class, 'index'])->name('lottery.tickets');
 Route::post('/admin/get-winner', [AdminController::class, 'getWinner'])->name('get.winner');
+
+Route::get('/payment/{order}', [PaymentController::class, 'makePayment']);
+Route::get('/accepted/{query}', [PaymentController::class, 'registredPayment']);
+Route::get('/canceled/{query}', [PaymentController::class, 'cancelPayment']);
 
 // Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //     return $request->user();
 // });
-
-
-// require __DIR__.'/auth.php';

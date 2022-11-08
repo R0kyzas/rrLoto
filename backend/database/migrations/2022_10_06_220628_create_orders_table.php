@@ -19,6 +19,7 @@ return new class extends Migration
             $table->integer('quantity');
             $table->string('order_nr')->unique();
             $table->string('cancel_reason', 255)->nullable(true);
+            $table->unsignedInteger('amount');
             $table->timestamps();
         });
     }

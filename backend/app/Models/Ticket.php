@@ -23,6 +23,6 @@ class Ticket extends Model
 
     public function winner()
     {
-        return $this->hasOne(Winner::class);
+        return $this->hasOne(Winner::class, 'ticket_id');
     }
 }

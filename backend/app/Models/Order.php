@@ -13,6 +13,7 @@ class Order extends Model
         'order_nr',
         'quantity',
         'cancel_reason',
+        'amount',
     ];
 
     public function tickets()

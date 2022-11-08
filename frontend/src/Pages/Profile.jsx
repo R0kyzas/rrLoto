@@ -5,6 +5,7 @@ import axios from '../api/axios';
 import { usePromiseTracker, trackPromise } from "react-promise-tracker";
 import Dropdown from 'react-bootstrap/Dropdown';
 import Table from 'react-bootstrap/Table';
+import ResponseNotification from '../Components/ResponseNotification';
 
 
 
@@ -12,9 +13,13 @@ const Profile = (props) => {
 
     const getToken = localStorage.getItem('userToken');
     
-    const [data, setData] = useState({});
+    const [data, setData] = useState([]);
+    const [paymentSuccessMessage, setPaymentSuccessMessage] = useState('');
+    const [showNotification, setShowNotification] = useState(false);
 
     const { promiseInProgress } = usePromiseTracker({area: props.area});
+
+    const query =  window.location.search.substring(1);
 
     useEffect(() => {
         if(getToken)
@@ -25,9 +30,24 @@ const Profile = (props) => {
                     setData(res);
                 
             }
+            if(query)
+            {
+                const getPaymentAnswer = async () =>{
+                    await axios.get(`/accepted/${query}`)
+                    .then((res)=> {
+                        if(res.status === 200)
+                        {
+                            setPaymentSuccessMessage(res.data);
+                            setShowNotification(true);
+                            window.history.pushState({}, document.title, "/" + "profile")
+                        }
+                    })
+                }
+                trackPromise(getPaymentAnswer());
+            }
             trackPromise(getData());
         }
-    }, [])
+    }, [paymentSuccessMessage])
     
     return(
         <>
@@ -47,60 +67,61 @@ const Profile = (props) => {
             }
             {!promiseInProgress &&
                 <div className='container d-flex profile justify-content-between'>
-                    {data.orders && 
+                    <ResponseNotification data={paymentSuccessMessage} showNotification={showNotification} setShowNotification={setShowNotification} />
+                    {data && 
                         (data.orders?.map((order) => (
-                            <>
-                                <div className="card card-ticket text-center">
+                            <div className="card card-ticket text-center">
                                         <div className="card-header">
                                             <div>
-                                                Užsakymo numeris: {order.order_nr}
+                                                Order number: {order.order_nr}
                                             </div>
                                         </div>
-                                        <div className='card-body'>
-                                        <Dropdown className='w-100'>
-                                            <Dropdown.Toggle variant="success" id="dropdown-basic" className='w-100 d-flex justify-content-between align-items-center'>
-                                                <div>
-                                                    Bilietų kiekis: {order.quantity}
-                                                </div>
-                                                <div>
-                                                    {order.active === 0 ? 'Laukiantis aktyvavimo' : 'Aktyvuotas'}
-                                                </div>
-                                            </Dropdown.Toggle>
+                                    <div className='card-body'>
+                                    <Dropdown className='w-100'>
+                                        <Dropdown.Toggle variant="success" id="dropdown-basic" className='w-100 d-flex justify-content-between align-items-center'>
+                                            <div>
+                                                Number of tickets: {order.quantity}
+                                            </div>
+                                            <div>
+                                                {order.active === 0 && ('Waiting for activation')}
+                                                {order.active === 1 && ('Actived')}
+                                                {order.active === 2 && ('Cancelled')}
+                                            </div>
+                                        </Dropdown.Toggle>
 
-                                            <Dropdown.Menu>
-                                                    <div className='tickets d-flex w-100 justify-content-between'>
-                                                    <Table striped bordered>
+                                        <Dropdown.Menu>
+                                                <div className='tickets d-flex w-100 justify-content-between'>
+                                                <Table striped bordered>
                                                     <thead>
                                                         <tr>
-                                                            <th>Bilieto numeris</th>
+                                                            <th>Ticket number</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
                                                         {order.tickets.map((ticket) => (
-                                                            <tr>
+                                                            <tr key={ticket.id}>
                                                                 <td># {ticket.ticketNumber}</td>
                                                             </tr>
                                                         ))}
                                                     </tbody>
-                                                    </Table>
-                                                    </div>
-                                            </Dropdown.Menu>
-                                        </Dropdown>
-                                        </div>
-                                    </div>
-                            </>
+                                                </Table>
+                                            </div>
+                                        </Dropdown.Menu>
+                                    </Dropdown>
+                                </div>
+                            </div>
                         )
                     ))}
-                    {data.orders.length === 0 && (
+                    {data.length === 0 && (
                         <div className="card card-ticket text-center">
                             <div className="card-header">
                                 <div>
-                                    Užsakymo informacija
+                                    Order information
                                 </div>
                             </div>
                             <div className='card-body'>
                                 <div>
-                                    Šiuo metu neturite įsigyje bilieto
+                                    You have not purchased a ticket at this time
                                 </div>
                             </div>
                         </div>

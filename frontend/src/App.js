@@ -7,6 +7,7 @@ import Home from './Pages/Home';
 import Other from './Pages/Other';
 import Login from './Pages/Login';
 import Admin from './Pages/Admin';
+import CancelPayment from './Pages/CancelPayment';
 
 function App() {
 
@@ -19,6 +20,7 @@ function App() {
         <Route path="other" element={<Other />} />
         <Route path="admin" element={<Admin />} />
         <Route path="login" element={<Login />} />
+        <Route path="cancel" element={<CancelPayment />} />
       </Routes>
       <Navbar />
     </>
